@@ -28,85 +28,328 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 1 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Alper Gel </div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+			My Github repo doesnt have a "Settings" button as of 8 PM 2/18/2025, so I opened the HTML in my browser and generated the PDF. Image showing lack of Settings tab is below.
+			<figure>
+				<img src="images/github.png" width="400px" alt="Screenshot of github bug"/>
+				<figcaption>Screenshot of github bug</figcaption>
+			</figure>
+		<br>
+
+		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw1-alper.git">https://github.com/cal-cs184-student/sp25-hw1-alper.git</a>
+
 		
-		<br>
-
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
-
-		<figure>
-			<img src="lion.jpg" alt="Lion" style="width:50%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
-
+		
 		<!--
 		We've already added one heading per task, to make your write-up as navigable when grading. Please fit your write-up within these sections!
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
-
+			In this HW I implemented an entrie triangle rasterization pipeline, with its included visual filtering/sampling improvements, that form the basis of modern day rendering! This project was extremeley interesting and I learned lots. I think my favorite part was how simple the mipmap sampling was, even though I expected it to be a very complicated optimization.
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			</table>
-		</div>
+		<h3>Task 1.1: Triangle Inside Test</h3>
+		<p>
+			We first determine a convex bounding box for the triangle meant to be drawn,
+			and make sure that bounding box is entirely in the screen. Then, we iterate
+			through each pixel in the bounding box, and then test if it lies inside of the
+			triangle by computing three edge functions, which basically are signed distances
+			from the pixel we are currently on to each of the three edges. IF all edge
+			functions have the same sign, all positive or all negative, that means the pixel is
+			inside the triangle. This signed reasoning is the basis of how barycentric coords
+			check if a point is inside a triangle
+		</p>
 		
+		<h3>Task 1.2: Simple Algorithm Implementation</h3>
+		<p>
+			For my "simple" algorithm, it is exactly checking each sample within the bounding
+			box of the triangle, then running the in-triangle test on them. I have utilized
+			some fundamental optimizations to reduce compute time marginally in the last
+			subsection of this task.
+		</p>
+		
+		<h3>Task 1.3: Implementation Results</h3>
+		<figure>
+			<img src="images/task1_3.png" width="400px" alt="Screenshot of basic/test4.svg"/>
+			<figcaption>Screenshot of basic/test4.svg</figcaption>
+		</figure>
+		
+		<h3>Task 1.4(EC): Optimization Attempts</h3>
+		<p>
+			I could have done optimizations on the simple triangle rasterizer algorithm by
+			just precomputing the edge function gradients then incrementing them, but I
+			struggled to visualize how much of a difference that would actually make. This
+			led me to research some more optimal ways to run triangle rasterization. That
+			made me stumble upon scanline rasterization.
+		</p>
+		
+		<h4>Scanline Algorithm Steps:</h4>
+		<ol>
+			<li>Sort all coords by y</li>
+			<li>Find minY maxX triangle bounding box. We can do this two coord process
+				since the coords are sorted by Y now. We then clip the bounding box to
+				be fully on screen.</li>
+			<li>For every row of the image, we initialize a vector that acts as a spot to
+				push items into. We then check the comparison of y against the other y
+				coords, then do a LERP and push that into the vector. If we have 2 or
+				more of these lerps for a row, then we know the current y-value must have
+				some points in the triangle, so we move to drawing. We then sort the
+				vector store by coordinate values, and calculate an x range (minX -> maxX)
+				based off the values in the vector store. Finally, we iterate over the x range
+				and fill those pixels.</li>
+		</ol>
+		
+		<p>
+			The scanline triangle rasterization had a 13 ms DrawRend::redraw() time, compared 
+			to the simple triangle rasterization's 16 ms.
+		</p>
+		
+		<p>
+			I left the scanline algorithm commented out above my simple algorithm, since I had 
+			major issues adding super sampling to it, but scanline works 100% for rasterization, 
+			which is what this extra credit is for. I got inspiration for the scanline algorithm 
+			from: <a href="https://fgiesen.wordpress.com/2013/02/10/optimizing-the-basic-rasterizer">
+			https://fgiesen.wordpress.com/2013/02/10/optimizing-the-basic-rasterizer</a>
+		</p>
+
 		<h2>Task 2: Antialiasing by Supersampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h3>Task 2.1: Supersampling explanation </h3>
+		<p>
+			Supersampling subsamples non-existent pixels then pools them together (avg's color values) as rasterization occurs onto the screen. This allows for jagged edges to be minimized. For my implementation, every time a triangle is being rasterized, I got its area. If it had 0 area, then we skip it, if not, we calculate the barycentric coords normalized by the area to do a point in triangle test.Then, if it passes the test, the three colors are interpolated by doing a weighted sum of alpha, beta, gamma, and their respective colors. We then index into the correct pixel via the sample_buffer, which is then drawn to screen.
+		</p>
+		<h3>Task 2.2: Comparison of Sampling Levels </h3>
+		<p>
+			As can be observed, a significant improvement is seen in the thin parts of the triangles as sampling increases, as supersampling fundamentally subsamples then averages so the more samples we have, the better improvement for jaggies is observed.
+		</p>
+		<table style="width: 100%;">
+			<tr>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task2_1.png" width="100%" alt="1x sampling"/>
+						<figcaption>1x sampling</figcaption>
+					</figure>
+				</td>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task2_4.png" width="100%" alt="4x sampling"/>
+						<figcaption>4x sampling</figcaption>
+					</figure>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task2_9.png" width="100%" alt="9x sampling"/>
+						<figcaption>9x sampling</figcaption>
+					</figure>
+				</td>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task2_16.png" width="100%" alt="16x sampling"/>
+						<figcaption>16x sampling</figcaption>
+					</figure>
+				</td>
+			</tr>
+		</table>
+		<h3>Task 2.3 (EC): Comparison of Jittered Sampling</h3>
+		<p>
+			I implemented Jittered sampling in place of grid sampling. It is commented out to allow grid sampling to be the standard moving forward, but below are comparison images with similar pixel investigator placement as the grid subsampled images in Task 2.2
+		</p>
+		<table style="width: 100%;">
+			<tr>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task2_j_1.png" width="100%" alt="1x sampling"/>
+						<figcaption>1x jittered sampling</figcaption>
+					</figure>
+				</td>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task2_j_4.png" width="100%" alt="4x sampling"/>
+						<figcaption>4x jittered sampling</figcaption>
+					</figure>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task2_j_9.png" width="100%" alt="9x sampling"/>
+						<figcaption>9x jittered sampling</figcaption>
+					</figure>
+				</td>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task2_j_16.png" width="100%" alt="16x sampling"/>
+						<figcaption>16x jittered sampling</figcaption>
+					</figure>
+				</td>
+			</tr>
+		</table>
 
 		<h2>Task 3: Transforms</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h3>Task 3.1 </h3>
+		<p>
+			I really enjoy soccer, so I was trying to make cubeman a goalie reaching for a
+			ball thats about to score. I wasnt able to add a ball for some reason, but I tried
+			to add to the svg a white circle with a black background close to where the
+			robots arms are reaching.
+		</p>
+		<h3>Task 3.2: My Robot Image</h3>
+		<figure>
+			<img src="images/myrobot.png" width="400px" alt="Screenshot of my robot"/>
+			<figcaption>Screenshot of my robot depiction</figcaption>
+		</figure>
 
 		<h2>Task 4: Barycentric coordinates</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h3> Task 4.1: Explanation </h3>
+		<p>
+			Barycentric coordinates are a way to represent any point inside a triangle as a weighted sum of the triangle's vertices. 
+			These weights (α, β, γ) sum to 1 and tell us how much each vertex "contributes" to the point's position and properties.
+		</p>
+		<p>
+			Think of it like mixing paint - if you have three primary colors at the vertices (red, green, blue), then any point inside
+			the triangle will be a blend of those colors based on how close it is to each vertex. A point very close to the red vertex
+			will have a high α value (close to 1) and low β and γ values (close to 0), making it appear mostly red. A point in the
+			middle of the triangle will have more balanced weights, creating a more evenly blended color.
+		</p>
+		
+		<figure>
+			<svg width="400" height="400" viewBox="0 0 400 400">
+				<defs>
+					<linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+						<stop offset="0%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgb(0,255,0);stop-opacity:1" />
+					</linearGradient>
+					<linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+						<stop offset="0%" style="stop-color:rgb(0,0,255);stop-opacity:1" />
+						<stop offset="100%" style="stop-color:rgb(0,255,0);stop-opacity:1" />
+					</linearGradient>
+				</defs>
+				<polygon points="200,50 50,350 350,350" style="fill:url(#grad1);fill-opacity:0.5" />
+				<polygon points="200,50 50,350 350,350" style="fill:url(#grad2);fill-opacity:0.5" />
+				<circle cx="200" cy="50" r="5" fill="red"/>
+				<circle cx="50" cy="350" r="5" fill="blue"/>
+				<circle cx="350" cy="350" r="5" fill="green"/>
+				<text x="190" y="40" fill="black">α</text>
+				<text x="40" y="370" fill="black">β</text>
+				<text x="360" y="370" fill="black">γ</text>
+			</svg>
+			<figcaption>Triangle showing color interpolation using barycentric coordinates. The vertices are colored red (α=1), 
+			blue (β=1), and green (γ=1), with smooth blending between them based on barycentric weights.</figcaption>
+		</figure>
+		<h3> Task 4.2: Rasterized Color Wheel</h3>
+		<p>
+			Below is the color wheel rasterized by the interpolated color 
+		</p>
+		<figure>
+			<img src="images/task4.png" width="400px" alt="Screenshot of rasterized color wheel"/>
+			<figcaption>Screenshot of rasterized color wheeln</figcaption>
+		</figure>
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h3>Task 5.1: Pixel Sampling Explanation</h3>
+		<p>
+			Pixel sampling is a technique used to determine the color of a pixel when mapping a UV texture onto a surface. The two methods implemented in this are: nearest neighbor sampling and bilinear sampling.
 
+			In nearest neighbor sampling, we simply find the closest texel (texture pixel) to our sampling point and use its color directly. This is like snapping to the nearest grid point. While computationally efficient, this can result in blocky or pixelated appearances, especially when textures are stretched or viewed up close.
+
+			Bilinear sampling provides smoother results by interpolating between the 4 closest texels. It performs two linear interpolations in each direction (hence bi-linear):
+			1. First horizontally between pairs of texels
+			2. Then vertically between those interpolated results
+
+			The process can be visualized as:
+			1. Finding the 4 surrounding texels (c00, c10, c01, c11)
+			2. Interpolating horizontally to get c0h = lerp(sx, c00, c10) and c1h = lerp(sx, c01, c11)
+			3. Interpolating vertically between these results: cfinal = lerp(sy, c0h, c1h)
+
+			This smoother interpolation reduces aliasing artifacts and produces more visually pleasing results, especially for transformed or magnified textures. However, it comes at the cost of requiring more texture lookups and calculations per pixel.
+		</p>
+		<h3>Task 5.2: Pixel Sampling Image Comparisons</h3>
+		<table style="width: 100%;">
+			<tr>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task5_n_1.png" width="100%" alt="n 1x sampling"/>
+						<figcaption>1x Nearest Sampling</figcaption>
+					</figure>
+				</td>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task5_n_16.png" width="100%" alt="n 16x sampling"/>
+						<figcaption>16x Nearest Sampling</figcaption>
+					</figure>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task5_b_1.png" width="100%" alt="b 1x sampling"/>
+						<figcaption>1x Bilinear Sampling</figcaption>
+					</figure>
+				</td>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/task5_b_16.png" width="100%" alt="b 16x sampling"/>
+						<figcaption>16x Bilinear Sampling</figcaption>
+					</figure>
+				</td>
+			</tr>
+		</table>
+		<h3>Task 5.3: Pixel Sampling Differences Discussion</h3>
+		<p>
+			There are major differences between the nearest and bilinear samplings. The nearest pixel sampling has significantly more gaps in thin single color lines compared to the bilinear. The improvement of the bilinear simply compounds with the 16x supersampling on the bilinear.
+		</p>
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h3>Task 6.1: Level Sampling</h3>
+		<p>
+			Level sampling, also known as mipmap sampling, helps reduce aliasing artifacts when viewing textures at different distances or scales. Mipmaps are pre-computed, downsampled versions of the original texture, each level being half the size of the previous one. Level sampling allows us to approximate supersampling at a fraction of the compute cost.
 
-		<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+			There are three main level sampling methods:
+			1. L_ZERO: Always samples from the highest resolution mipmap level (level 0)
+			2. L_NEAREST: Samples from the single mipmap level closest to the ideal level
+			3. L_LINEAR: Samples from the two closest mipmap levels and linearly interpolates between them
 
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+			The appropriate mipmap level is determined by calculating how much the texture coordinates change between adjacent pixels (dx,dy). Larger changes indicate the texture is being viewed from further away or at a more oblique angle, suggesting a lower resolution mipmap should be used. This helps prevent aliasing while maintaining visual quality and improving performance.
+		</p>
+		<h3>Task 6.2: Tradeoffs</h3>
+		<p>
+			Supersampling provides the highest quality anti-aliasing by taking multiple samples per pixel, but is extremely computationally expensive. While pixel sampling and level sampling can achieve similar visual results, level sampling (mipmapping) is significantly more computationally efficient since it pre-computes and stores downsampled versions of the texture rather than doing expensive sampling calculations in an online manner. Overall, all provide relatively the same visual quality improvements, just differences in compute resources required and the speed at which they can be calculated.
+		</p>
+		<h3>Task 6.3: Level Sampling Comparison</h3>
+		<table style="width: 100%;">
+			<tr>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/6_n_n.png" width="100%" alt="L_ZERO nearest"/>
+						<figcaption>L_ZERO with P_NEAREST</figcaption>
+					</figure>
+				</td>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/6_n_b.png" width="100%" alt="L_NEAREST nearest"/>
+						<figcaption>L_NEAREST with P_NEAREST</figcaption>
+					</figure>
+				</td>
+			</tr>
+			<tr>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/6_b_n.png" width="100%" alt="L_LINEAR nearest"/>
+						<figcaption>L_LINEAR with P_NEAREST</figcaption>
+					</figure>
+				</td>
+				<td style="width: 50%;">
+					<figure>
+						<img src="images/6_b_b.png" width="100%" alt="L_LINEAR bilinear"/>
+						<figcaption>L_LINEAR with P_BILINEAR</figcaption>
+					</figure>
+				</td>
+			</tr>
+		</table>
+		
 		</div>
 	</body>
 </html>
