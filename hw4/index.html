@@ -28,82 +28,299 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 4 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Alper Gel</div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage:  <a href="https://cal-cs184-student.github.io/hw-webpages-alper-test/hw4/index.html">https://cal-cs184-student.github.io/hw-webpages-alper-test/hw4/index.html</a>
 
 		<br>
 
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to GitHub repository:  <a href="https://github.com/cal-cs184-student/sp25-hw4-alper-hw4">https://github.com/cal-cs184-student/sp25-hw4-alper-hw4</a>
 
-		<figure>
-			<img src="clothsim.png" alt="Cloth draped over sphere" style="width:70%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
-
-		<!--
-		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
-		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
-
+		Overall, this project allowed me to build a cloth simulation graphical environment starting from the cloth's physics properties, to how to propogate each simulation step informed off physics properties. I really enjoyed the shaders part, and really like the custom shader I was able to make, overall really fun project compared to project 3!
 		<h2>Part 1: Masses and springs</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		<h3>Below are two images of scene/pinned2.json</h3>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/part1/s1.png" width="400px"/>
+				  <figcaption>Pinned2 Screenshot 1, Zoomed Out.</figcaption>
 				</td>
 				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="images/part1/s2.png" width="400px"/>
+				  <figcaption>Pinned2 Screenshot 2,Zoomed In.</figcaption>
 				</td>
 			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="clothsim.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
+			  
 			</table>
+		<h3>Comparison of Activated Constraints</h3>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part1/noshearc.png" width="300px"/>
+				<figcaption>No Shear Springs</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part1/shearc.png" width="300px"/>
+				<figcaption>Only Shear Springs</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part1/allc.png" width="300px"/>
+				<figcaption>All Springs Activated</figcaption>
+			</td>
+			</tr>
+		</table>
+
 		</div>
 
 		<h2>Part 2: Simulation via numerical integration</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Part 3: Handling collisions with other objects</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Part 4: Handling self-collisions</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Part 5: Shaders</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>(Optional) Part 6: Extra Credit - Additional cloth simulation features!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h3>Comparison of Density Changes with Baseline</h3>
+		<h4>Observations: Increasing density increases the amplitude and visibility of folds in the cloth as can be seen below</h4>
 		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part2/baseline.png" width="300px"/>
+				<figcaption>Baseline</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part2/lowdens.png" width="300px"/>
+				<figcaption>Low Density</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part2/highdens.png" width="300px"/>
+				<figcaption>High Density</figcaption>
+			</td>
+			</tr>
+		</table>
+		<h3>Comparison of KS Changes with Baseline</h3>
+		<h4>Observations: Lowering KS collapses the top fold, and makes the cloth droop down significantly more than with higher KS.</h4>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part2/baseline.png" width="300px"/>
+				<figcaption>Baseline</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part2/lowks.png" width="300px"/>
+				<figcaption>Low KS</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part2/highks.png" width="300px"/>
+				<figcaption>High KS</figcaption>
+			</td>
+			</tr>
+		</table>
+		<h3>Comparison of Dampening Changes with Baseline</h3>
+		<h4>Observations: Visually looking at the normals, the low/high have flipped parts that are folded, and high dampening added some mild smoothing to the folds.</h4>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part2/baseline.png" width="300px"/>
+				<figcaption>Baseline</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part2/lowdamp.png" width="300px"/>
+				<figcaption>Low Dampening</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part2/highdamp.png" width="300px"/>
+				<figcaption>High Dampening</figcaption>
+			</td>
+			</tr>
+		</table>
+		<h3>4 Pinned Cloth Output</h3>
+		<img src="images/part2/4pin.png" width="300px"/>
+		<figcaption>Baseline parameterscene/pinned4.json at resting state</figcaption>
+		<h2>Part 3: Handling collisions with other objects</h2>
+		<h3>Sphere Collision: First we need to calculate the distance between the PM and the sphere origin. If this dist is less than the sphere's radius, we know that the cloth has started a collision event. If there is a collision, we calculate the unit direction vector from the spheres origin to the point masses position. We then project this direction to the spheres surface and find a tangent point (Vector3D tangent_point = origin + unit_dir * radius). This allows us to compute a correction vector from the PM's last position to this tangent point, then we apply it scaled by (1-friction) to the current location of the point mass.</h3>
+		<h3>Plane Collision: We calculate the signed distance between the pm and the plane using the plane normal via a dot product. If the distance is negative, that means the pm has clipped into the plane. If so, we project the pm's position onto the plane, with the small offset given. Then we compute a correction vector from the pm's last position to the new projected point, then apply the correction scaled by (1-friction) to update the point masses position onto the plane.</h3>
+
+		<h3>Comparison of ks value changes for sphere intersection</h3>
+		<h4>Observations: Low ks causes the cloth to drape more form-fitting to the sphere object beneath it, while high ks allows the cloth to maintain some rigid structure, and it sticks out. </h4>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part3/sphere5000.png" width="300px"/>
+				<figcaption>Baseline, ks=5000</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part3/sphere500.png" width="300px"/>
+				<figcaption>Low, ks=500</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part3/sphere50000.png" width="300px"/>
+				<figcaption>High, ks=50000</figcaption>
+			</td>
+			</tr>
+		</table>
+		<h3>Comparison of ks value changes for sphere intersection</h3>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part3/plane_normal.png" width="300px"/>
+				<figcaption>Cloth on plane, normal</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part3/plane_wire.png" width="300px"/>
+				<figcaption>Cloth on plane, wireframe</figcaption>
+			</td>
+			
+			</tr>
+		</table>
+		<h2>Part 4: Handling self-collisions</h2>
+		<h3>Description of Implementation: We first build a spatial hash map by calculating a unique hash value based on the point mass's 3D position, essentially gridding up the entire 3D space into a spatial hash map. If a hash location doesnt already exist in the hash map, we create a vector and populate the vector. In the simulate function we check for self collisions by building the spatial map once per simulation step, then calling the self_collide function on each existing point mass. Inside the self_collide function, we find the hash value of the point mass, retrieve all other point masses in the SAME spatial cell. As noted on ed, we could check neighboring spatial cells for a better approach but we dont for simplicity of the assignment. Then, for each potential collision "candidate" we check if the candidate is the same point mass, if so skip. If not, we get the distance between the candidate and the point mass. If the dist is less than twice the cloth thickness, we have an intersection. If so, we get a correction vector that pushes the PM's apart, and we apply that correction proportionally.</h3>
+		<h3>Comparison of progression of cloth falling with default values</h3>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part4/early.png" width="300px"/>
+				<figcaption>Early in simulation process</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part4/mid.png" width="300px"/>
+				<figcaption>Close to midway</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part4/late.png" width="300px"/>
+				<figcaption>At rest</figcaption>
+			</td>
+			</tr>
+		</table>
+		<h3>Comparison of low vs high ks value</h3>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part4/lowks.png" width="300px"/>
+				<figcaption>Low KS</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part4/highks.png" width="300px"/>
+				<figcaption>High KS</figcaption>
+			</td>
+			
+			</tr>
+		</table>
+		<h3>Comparison of low vs high density value</h3>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part4/lowdensity.png" width="300px"/>
+				<figcaption>Low Density</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part4/highdensity.png" width="300px"/>
+				<figcaption>High Density</figcaption>
+			</td>
+			
+			</tr>
+		</table>
+		<h2>Part 5: Shaders</h2>
+		<h3>What is a shader program?</h3>
+		<h4>A shader program is a set of instructions that run on the GPU rather than the CPU. These are programs that are written in shader-specific languages like GLSL like we used here. Overall, they determine how 3D models are processed and rendered to the screen in terms of illumination and different visible effects. Vertex Shaders (.vert) pose as the first "programmable" stage in the overall rendering pipeling. They process the individual verices, transform them to screen space, then pass along vert attributes like normals and colors to the later stages of the rendering pipeline. On the otherhand, the fragment shader (.frag) process individual fragments from the rendering pipeline that we covered in class. These fragments determine the final color of each pixel, and fragment shaders handle lighing calculations, tex sampling, and configuration of material properties. We see important lighting effects like reflection here (Mirror.frag)!</h4>
+		<h3>What is the Blinn-Phong shading model?</h3>
+		<h4>The Blinn-phong shading model is an illumination model that calculates how light interacts with surfaces via three discrete components: Ambient, Diffuse, and Specular. The final color output is a linear sum of these three components. The ambient term represents indirect light that bounced around the env, and is a form of equal illumination. The diffuse term simulates light that scatters equally in all directions when hitting a surface that looks matte (hemisphere scattering). The specular component creates shiny points on surfaces like polished metal, gives the "shiny" and reflective feeling. </h4>
+		<h3>Comparison of Blinn Phong Shader Components (Images)</h3>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+<table style="width: 100%; text-align: center; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: center;">
+        <img src="images/part5/ambientphong.png" width="300px"/>
+        <figcaption>Ambient</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="images/part5/diffusephong.png" width="300px"/>
+        <figcaption>Diffuse</figcaption>
+    </td>
+    </tr>
+    <tr>
+    <td style="text-align: center;">
+        <img src="images/part5/specularphong.png" width="300px"/>
+        <figcaption>Specular</figcaption>
+    </td>
+    <td style="text-align: center;">
+        <img src="images/part5/allphong.png" width="300px"/>
+        <figcaption>Full Blinn-Phong</figcaption>
+    </td>
+    </tr>
+</table>
+		<h3>Custom Texture Image (Find Oski!)</h3>
+		<img src="images/part5/texture.png" width="300px"/>
+		<figcaption>Texture Image</figcaption>
+
+		<h3>Bump Mapping</h3>
+		<h4>Comparison of Bump Mapping Methods(Images)</h4>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part5/bump_tex3.png" width="300px"/>
+				<figcaption>Bump</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part5/displacement_tex3.png" width="300px"/>
+				<figcaption>Displacement</figcaption>
+			</td>
+			</tr>
+		</table>
+		<h4>Comparison of methods: In the .vert file, for bump mapping we only pass the vertex data through without any modification, but in displacement, we move the vertices along their normal direction based on the height map. This makes it so that displacement only looks right when putting in the height and normal values suggested in the specs page. Both fragment shaders are about the same, they both use normal pertubation using the dU, dV equation provided in the specs, and the same Blinn-Phong lighting model used earlier for the phong shader.  </h4>
+		<h4>Comparison of Coarseness</h4>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part5/bump_low_coarse.png" width="300px"/>
+				<figcaption>Bump Coarse 16</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part5/displacement_low_coarse.png" width="300px"/>
+				<figcaption>Displacement Coarse 16</figcaption>
+			</td>
+			</tr>
+			<tr>
+			<td style="text-align: center;">
+				<img src="images/part5/bump_high_coarse.png" width="300px"/>
+				<figcaption>Bump Coarse 128</figcaption>
+			</td>
+			<td style="text-align: center;">
+				<img src="images/part5/displacement_high_coarse.png" width="300px"/>
+				<figcaption>Displacement Coarse 128</figcaption>
+			</td>
+			</tr>
+		</table>
+		<h3>Mirror Shader </h3>
+		<img src="images/part5/mirror.png" width="300px"/>
+		<figcaption>Mirror Shader</figcaption>
+		<h3>EXTRA CREDIT: Custom Shader </h3>
+		<h4>For the custom shader, I went for a holographic artifact effect using iridescent properties. Essentially, the plasma helper function combines multiple sine waves to create a plasma graphical effect, then outputs rainbow-like colors that flow across the duration of the surface. For the main function in Custom.frag, view-dependent effects are calculated using a fresnel effect that increases reflection at glancing angles. Then the environment cubemap is utilized and blended based off the fresnel term. The iridescence effect is utilized to create the soap bubble effect that changes as vieweing angle changes, and it is made with phase-shifted sine waves. Finally, the plasma effect is mixed with the iridescent output, environment reflections are added, then only diffuse lighting is added to maintain shape definition, but I opted not to go for full Blinn-Phong implementation since I thought that would overwhelm the viewer too much with the shiny-ness given the already overwhelming holographic effect.</h4>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+				<tr>
+				<td style="text-align: center;">
+					<img src="images/part5/trippy_custom.png" width="300px"/>
+					<figcaption>Uncovered</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/part5/trippy_custom_2.png" width="300px"/>
+					<figcaption>Covered</figcaption>
+				</td>
+				</tr>
+				
+			</table>
 		</div>
 	</body>
 </html>
